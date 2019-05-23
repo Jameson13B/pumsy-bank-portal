@@ -2,16 +2,21 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Icon from '../Components/Icon'
+import ProfileUpdate from '../Components/ProfileUpdate'
+import ProfileLog from '../Components/ProfileLog'
 
 class Profile extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      view: 'profile' // other option 'log'
+    }
   }
   componentDidMount() {
     const user = localStorage.getItem('JWT')
     if (!user) this.props.history.push('/login')
   }
+  handleToggleView = e => this.setState({ view: e.target.getAttribute('name') })
   render() {
     return (
       <Container>
@@ -19,9 +24,19 @@ class Profile extends Component {
           <CstmLink to='/'>
             <Icon icon='home' />
           </CstmLink>
-          <h3 style={{ color: 'green' }}>Profile</h3>
+          <h3 style={{ color: 'darkgreen' }}>Profile</h3>
         </Header>
-        <Body>Profile</Body>
+        <Body>
+          <Nav>
+            <NavBtn name='profile' onClick={this.handleToggleView}>
+              Profile
+            </NavBtn>
+            <NavBtn name='log' onClick={this.handleToggleView}>
+              User Log
+            </NavBtn>
+          </Nav>
+          {this.state.view === 'log' ? <ProfileLog /> : <ProfileUpdate />}
+        </Body>
       </Container>
     )
   }
@@ -64,4 +79,19 @@ const Body = styled.div`
   height: 84vh
   padding: 2vh;
   width: 65%;
+`
+const Nav = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`
+const NavBtn = styled.div`
+  border: 1px solid green;
+  border-radius: 15px;
+  color: darkgreen;
+  cursor: pointer;
+  padding: 15px;
+  width: 20%;
+  :hover {
+    background: rgb(118, 212, 118);
+  }
 `
