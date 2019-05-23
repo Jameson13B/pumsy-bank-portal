@@ -53,7 +53,7 @@ class Home extends Component {
 export default Home
 
 const Container = styled.div`
-  background-color: #eeee;
+  background-color: #eee;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -81,7 +81,8 @@ const IconBtn = styled.div`
   width: 20%;
   cursor: pointer;
   :hover {
-    background: ${props => `light${props.color}`};
+    background: ${props =>
+      props.color === 'salmon' ? 'lightpink' : `light${props.color}`};
   }
   i {
     padding: 15px;
