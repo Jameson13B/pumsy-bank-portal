@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Icon from '../Components/Icon'
 
-const Profile = props => {
-  return (
-    <Container>
-      <Header>
-        <CstmLink to='/'>
-          <Icon icon='home' />
-        </CstmLink>
-        <h3 style={{ color: 'green' }}>Profile</h3>
-      </Header>
-      <Body>Profile</Body>
-    </Container>
-  )
+class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+  componentDidMount() {
+    const user = localStorage.getItem('JWT')
+    if (!user) this.props.history.push('/login')
+  }
+  render() {
+    return (
+      <Container>
+        <Header>
+          <CstmLink to='/'>
+            <Icon icon='home' />
+          </CstmLink>
+          <h3 style={{ color: 'green' }}>Profile</h3>
+        </Header>
+        <Body>Profile</Body>
+      </Container>
+    )
+  }
 }
 
 export default Profile

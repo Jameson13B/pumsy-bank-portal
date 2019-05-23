@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Icon from '../Components/Icon'
 
-const Store = props => {
-  return (
-    <Container>
-      <Header>
-        <CstmLink to='/'>
-          <Icon icon='home' />
-        </CstmLink>
-        <h3 style={{ color: 'blue' }}>Store</h3>
-      </Header>
-      <Body>Store</Body>
-    </Container>
-  )
+class Store extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+  componentDidMount() {
+    const user = localStorage.getItem('JWT')
+    if (!user) this.props.history.push('/login')
+  }
+  render() {
+    return (
+      <Container>
+        <Header>
+          <CstmLink to='/'>
+            <Icon icon='home' />
+          </CstmLink>
+          <h3 style={{ color: 'blue' }}>Store</h3>
+        </Header>
+        <Body>Store</Body>
+      </Container>
+    )
+  }
 }
 
 export default Store

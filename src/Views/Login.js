@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { Mutation } from 'react-apollo'
+import { LOGIN } from '../Apollo/Mutation'
 
 class Login extends Component {
   constructor(props) {
@@ -12,30 +14,47 @@ class Login extends Component {
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value })
   }
-  handleLogin = () => {
+  _confirmLogin = data => {
     // Create Login
-    console.log('Login')
+    const { token } = data.login.token
+    localStorage.setItem('JWT', token)
+    this.props.history.push('/')
   }
   render() {
     return (
       <Container>
-        <Body onSubmit={this.handleLogin} autoComplete='off'>
-          <Input
-            type='username'
-            name='email'
-            value={this.state.email}
-            placeholder='Email'
-            onChange={this.handleInputChange}
-          />
-          <Input
-            type='password'
-            name='password'
-            value={this.state.password}
-            placeholder='Password'
-            onChange={this.handleInputChange}
-          />
-          <Button onClick={this.handleInputChange}>Login</Button>
-        </Body>
+        <Mutation
+          mutation={LOGIN}
+          variables={{
+            email: this.state.email,
+            password: this.state.password
+          }}
+          onCompleted={data => this._confirmLogin(data)}>
+          {login => (
+            <Body
+              onSubmit={e => {
+                e.preventDefault()
+                login()
+              }}
+              autoComplete='off'>
+              <Input
+                type='username'
+                name='email'
+                value={this.state.email}
+                placeholder='Email'
+                onChange={this.handleInputChange}
+              />
+              <Input
+                type='password'
+                name='password'
+                value={this.state.password}
+                placeholder='Password'
+                onChange={this.handleInputChange}
+              />
+              <Button type='submit'>Login</Button>
+            </Body>
+          )}
+        </Mutation>
       </Container>
     )
   }
@@ -79,7 +98,8 @@ const Input = styled.input`
     margin-top: 25px;
   }
 `
-const Button = styled.div`
+const Button = styled.button`
+  background: transparent;
   border: 1px solid white;
   border-radius: 15px;
   padding: 15px;
@@ -87,6 +107,7 @@ const Button = styled.div`
   cursor: pointer;
   margin-top: 30px;
   color: white;
+  font-size: 1.5rem;
   :hover {
     background: coral;
   }

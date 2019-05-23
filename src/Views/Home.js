@@ -8,6 +8,14 @@ class Home extends Component {
     super(props)
     this.state = {}
   }
+  componentDidMount() {
+    const user = localStorage.getItem('JWT')
+    if (!user) this.props.history.push('/login')
+  }
+  handleLogout = () => {
+    localStorage.removeItem('JWT')
+    this.props.history.push('/login')
+  }
   render() {
     return (
       <Container>
@@ -19,11 +27,11 @@ class Home extends Component {
               <Icon icon='store' />
             </CstmLink>
           </IconBtn>
-          <IconBtn color='salmon'>
-            <CstmLink to='/login' color='salmon'>
-              <p>Login</p>
+          <IconBtn color='salmon' onClick={this.handleLogout}>
+            <Logout color='salmon'>
+              <p>Logout</p>
               <Icon icon='lock' />
-            </CstmLink>
+            </Logout>
           </IconBtn>
           <IconBtn color='green'>
             <CstmLink to='/profile' color='green'>
@@ -81,6 +89,11 @@ const IconBtn = styled.div`
   }
 `
 const CstmLink = styled(Link)`
+  text-decoration: none;
+  color: ${props => `${props.color}`};
+  font-size: 1.25rem;
+`
+const Logout = styled.div`
   text-decoration: none;
   color: ${props => `${props.color}`};
   font-size: 1.25rem;
