@@ -1,20 +1,44 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
 import styled from 'styled-components'
-import Icon from '../Components/Icon'
 
-const Login = props => {
-  return (
-    <Container>
-      <Header>
-        <CstmLink to='/'>
-          <Icon icon='home' />
-        </CstmLink>
-        <h3 style={{ color: 'salmon' }}>Login</h3>
-      </Header>
-      <Body>Login</Body>
-    </Container>
-  )
+class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+  handleLogin = () => {
+    // Create Login
+    console.log('Login')
+  }
+  render() {
+    return (
+      <Container>
+        <Body onSubmit={this.handleLogin} autoComplete='off'>
+          <Input
+            type='username'
+            name='email'
+            value={this.state.email}
+            placeholder='Email'
+            onChange={this.handleInputChange}
+          />
+          <Input
+            type='password'
+            name='password'
+            value={this.state.password}
+            placeholder='Password'
+            onChange={this.handleInputChange}
+          />
+          <Button onClick={this.handleInputChange}>Login</Button>
+        </Body>
+      </Container>
+    )
+  }
 }
 
 export default Login
@@ -28,30 +52,42 @@ const Container = styled.div`
   font-size: calc(10px + 2vmin);
   color: #282c34;
 `
-const Header = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 65%;
-  height: 9vh;
-  i {
-    color: salmon;
-  }
-`
-const CstmLink = styled(Link)`
-  text-decoration: none;
-  color: white;
-  vertical-align: middle;
-  margin-right: 15px;
-  :hover {
-    color: #bbb;
-  }
-`
-const Body = styled.div`
+const Body = styled.form`
   background: lightsalmon;
   border: 1px solid salmon;
   border-radius: 15px;
-  height: 84vh
-  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 92vh;
+  padding: 15px;
+  margin: 2vh 0;
   width: 65%;
+`
+const Input = styled.input`
+  background: transparent;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 1px solid white;
+  padding: 5px 10px;
+  color: white;
+  width: 50%;
+  font-size: 1.5rem;
+  :nth-child(2) {
+    margin-top: 25px;
+  }
+`
+const Button = styled.div`
+  border: 1px solid white;
+  border-radius: 15px;
+  padding: 15px;
+  width: 20%;
+  cursor: pointer;
+  margin-top: 30px;
+  color: white;
+  :hover {
+    background: coral;
+  }
 `
