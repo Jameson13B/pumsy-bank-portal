@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Query } from 'react-apollo'
 import { USER_LOG } from '../Apollo/Query'
 import moment from 'moment-timezone'
-import { storeKeyNameFromField } from '../../node_modules/apollo-utilities'
 
 class ProfileLog extends Component {
   constructor(props) {
