@@ -10,7 +10,7 @@ class Store extends Component {
   }
   componentDidMount() {
     const user = localStorage.getItem('JWT')
-    if (!user) this.props.history.push('/login')
+    if (!user || user === 'undefined') this.props.history.push('/login')
   }
   render() {
     return (

@@ -15,8 +15,7 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
   _confirmLogin = data => {
-    // Create Login
-    const { token } = data.login.token
+    const token = data.login.token
     localStorage.setItem('JWT', token)
     this.props.history.push('/')
   }
@@ -34,6 +33,7 @@ class Login extends Component {
             <Body
               onSubmit={e => {
                 e.preventDefault()
+                console.log(this.state.email, this.state.password)
                 login()
               }}
               autoComplete='off'>
