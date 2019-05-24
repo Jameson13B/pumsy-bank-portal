@@ -14,7 +14,6 @@ class Profile extends Component {
   }
   componentDidMount() {
     const user = localStorage.getItem('JWT')
-    console.log(user)
     if (!user || user === 'undefined') this.props.history.push('/login')
   }
   handleToggleView = e => this.setState({ view: e.target.getAttribute('name') })
@@ -80,6 +79,7 @@ const Body = styled.div`
   height: 84vh
   padding: 2vh;
   width: 65%;
+  overflow: scroll;
 `
 const Nav = styled.div`
   display: flex;

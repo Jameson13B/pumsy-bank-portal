@@ -9,6 +9,12 @@ const USER_PROFILE = gql`
       parentEmail
       balance
       class
+      log {
+        id
+        change
+        description
+        createdAt
+      }
     }
   }
 `
