@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 })
 // Create Authentication Link
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('JWT')
+  const token = sessionStorage.getItem('JWT')
   return {
     headers: {
       ...headers,

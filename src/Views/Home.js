@@ -9,11 +9,11 @@ class Home extends Component {
     this.state = {}
   }
   componentDidMount() {
-    const user = localStorage.getItem('JWT')
+    const user = sessionStorage.getItem('JWT')
     if (!user || user === 'undefined') this.props.history.push('/login')
   }
   handleLogout = () => {
-    localStorage.removeItem('JWT')
+    sessionStorage.removeItem('JWT')
     this.props.history.push('/login')
   }
   render() {

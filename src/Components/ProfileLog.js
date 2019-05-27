@@ -14,13 +14,9 @@ class ProfileLog extends Component {
       <Query query={USER_LOG}>
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>
-          if (error) {
-            console.log(error)
-            return <div>Error</div>
-          }
+          if (error) return <div>Error</div>
 
           let logs = data.user.log
-          console.log(logs)
 
           return (
             <Container>

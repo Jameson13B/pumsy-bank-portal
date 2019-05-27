@@ -13,7 +13,7 @@ class Profile extends Component {
     }
   }
   componentDidMount() {
-    const user = localStorage.getItem('JWT')
+    const user = sessionStorage.getItem('JWT')
     if (!user || user === 'undefined') this.props.history.push('/login')
   }
   handleToggleView = e => this.setState({ view: e.target.getAttribute('name') })
