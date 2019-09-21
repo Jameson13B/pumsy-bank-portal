@@ -13,7 +13,7 @@ import { setContext } from 'apollo-link-context'
 require('dotenv').config()
 // Create HTTP Link
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
+  uri: process.env.REACT_APP_GRAPHQL_URL
 })
 // Create Authentication Link
 const authLink = setContext((_, { headers }) => {
