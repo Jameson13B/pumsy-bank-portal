@@ -1,16 +1,43 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { database as db } from '../firebase'
+import { Mutation } from 'react-apollo'
+import { PURCHASE } from '../Apollo/Mutation'
+import { confirmAlert } from 'react-confirm-alert'
 import styled from 'styled-components'
 import Icon from '../Components/Icon'
+import ItemBtn from '../Components/StoreItemBtn'
+
+import './alert.css'
 
 class Store extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      items: [],
+      user: null
+    }
   }
   componentDidMount() {
-    const user = sessionStorage.getItem('JWT')
-    if (!user || user === 'undefined') this.props.history.push('/login')
+    const jwt = sessionStorage.getItem('pbp/jwt')
+    const user = JSON.parse(sessionStorage.getItem('pbp/user'))
+    if (!jwt || jwt === 'undefined') this.props.history.push('/login')
+    if (this.state.items.length === 0) {
+      db.collection('inventory')
+        .get()
+        .then(querySnapshot => {
+          let items = []
+          querySnapshot.forEach(doc => {
+            const data = doc.data()
+            data.id = doc.id
+            items.push(data)
+          })
+          // Sort buttons alphabetically
+          items.sort((a, b) => (a.title > b.title ? 1 : -1))
+          this.setState({ items, user })
+        })
+        .catch(feedback => this.setState({ feedback }))
+    }
   }
   render() {
     return (
@@ -21,7 +48,60 @@ class Store extends Component {
           </CstmLink>
           <h3 style={{ color: 'blue' }}>Store</h3>
         </Header>
-        <Body>Store</Body>
+        <Body>
+          <Title>Welcome to the Store</Title>
+          <Message>
+            View the inventory below and make your selection. Once purchased you
+            cannot change your mind.
+          </Message>
+          {this.state.feedback ? (
+            <Feedback>{this.state.feedback}</Feedback>
+          ) : null}
+          <ItemList>
+            {this.state.items.map((item, i) => {
+              return (
+                <Mutation
+                  mutation={PURCHASE}
+                  variables={{
+                    id: this.state.user.id,
+                    points: item.amount,
+                    description: item.title
+                  }}
+                  onCompleted={data => {
+                    this.setState({
+                      feedback: `Succeessfully purchased!`
+                    })
+                  }}
+                  key={i}
+                >
+                  {purchase => (
+                    <ItemBtn
+                      item={item}
+                      key={i}
+                      index={i}
+                      handleClick={() => {
+                        confirmAlert({
+                          title: `Are you sure?`,
+                          message: `You want to purchase a ${item.title}?`,
+                          buttons: [
+                            {
+                              label: 'Yes',
+                              onClick: () => purchase()
+                            },
+                            {
+                              label: 'No',
+                              onClick: () => {}
+                            }
+                          ]
+                        })
+                      }}
+                    />
+                  )}
+                </Mutation>
+              )
+            })}
+          </ItemList>
+        </Body>
       </Container>
     )
   }
@@ -64,4 +144,25 @@ const Body = styled.div`
   height: 84vh
   padding: 2vh;
   width: 65%;
+`
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: bold;
+`
+const Message = styled.p`
+  font-size: 1.5rem;
+  margin: 15px auto;
+  max-width: 550px;
+`
+const Feedback = styled.p`
+  color: red;
+  font-size: 1rem;
+  margin: 5px 0;
+`
+const ItemList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: auto;
 `

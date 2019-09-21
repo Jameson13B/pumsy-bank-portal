@@ -9,13 +9,15 @@ import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
+// Configure dotenv
+require('dotenv').config()
 // Create HTTP Link
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000'
 })
 // Create Authentication Link
 const authLink = setContext((_, { headers }) => {
-  const token = sessionStorage.getItem('JWT')
+  const token = sessionStorage.getItem('pbp/jwt')
   return {
     headers: {
       ...headers,

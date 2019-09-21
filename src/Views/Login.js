@@ -16,7 +16,9 @@ class Login extends Component {
   }
   _confirmLogin = data => {
     const token = data.login.token
-    sessionStorage.setItem('JWT', token)
+    const user = data.login.user
+    sessionStorage.setItem('pbp/jwt', token)
+    sessionStorage.setItem('pbp/user', JSON.stringify(user))
     this.props.history.push('/')
   }
   render() {
@@ -28,14 +30,16 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
           }}
-          onCompleted={data => this._confirmLogin(data)}>
+          onCompleted={data => this._confirmLogin(data)}
+        >
           {login => (
             <Body
               onSubmit={e => {
                 e.preventDefault()
                 login()
               }}
-              autoComplete='off'>
+              autoComplete='off'
+            >
               <Input
                 type='username'
                 name='email'

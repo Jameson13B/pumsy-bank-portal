@@ -9,11 +9,11 @@ class Home extends Component {
     this.state = {}
   }
   componentDidMount() {
-    const user = sessionStorage.getItem('JWT')
+    const user = sessionStorage.getItem('pbp/jwt')
     if (!user || user === 'undefined') this.props.history.push('/login')
   }
   handleLogout = () => {
-    sessionStorage.removeItem('JWT')
+    sessionStorage.removeItem('pbp/jwt')
     this.props.history.push('/login')
   }
   render() {
@@ -42,7 +42,8 @@ class Home extends Component {
         </BtnPanel>
         <br />
         <span
-          style={{ fontSize: '1rem', padding: '15px', color: 'darkorange' }}>
+          style={{ fontSize: '1rem', padding: '15px', color: 'darkorange' }}
+        >
           By Atomic10 Studios
         </span>
       </Container>
